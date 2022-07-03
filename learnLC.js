@@ -246,4 +246,63 @@ var wiggleMaxLength = function (nums) {
   return ans;
 };
 
-console.log(wiggleMaxLength([1, 17, 5, 10, 13, 15, 10, 5, 16, 8]));
+// console.log(wiggleMaxLength([1, 17, 5, 10, 13, 15, 10, 5, 16, 8]));
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var romanToInt = function (s) {
+  const roman = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+  let ans = 0;
+  for (let i = s.length - 1; ~i; i--) {
+    let num = roman[s.charAt(i)];
+    if (4 * num < ans) ans -= num;
+    else ans += num;
+  }
+  return ans;
+};
+
+// console.log(romanToInt("LVIII"));
+
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function (strs) {
+  let size = strs.length;
+  if (size == 0) return "";
+  if (size == 1) return strs[0];
+  strs.sort();
+  let end = Math.min(strs[0].length, strs[size - 1].length);
+  let i = 0;
+  while (i < end && strs[0][i] == strs[size - 1][i]) i++;
+  let pre = strs[0].substring(0, i);
+  return pre;
+};
+
+/**
+ * @param {number[]} nums
+ * @param {number} val
+ * @return {number}
+ */
+var removeElement = function (nums, val) {
+  if (nums.length == 0) {
+    return 0;
+  }
+  let i = 0,
+    j = 0;
+  for (; i < nums.length - 1; i++) {
+    if (nums[i] != val) {
+      nums[j++] = nums[i];
+    }
+  }
+  if (nums[i] != val) {
+    nums[j++] = nums[i];
+  }
+  return j;
+};
+
+// console.log(removeElement([3, 2, 2, 3], 3));
+
+
