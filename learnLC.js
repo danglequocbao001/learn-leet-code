@@ -305,4 +305,20 @@ var removeElement = function (nums, val) {
 
 // console.log(removeElement([3, 2, 2, 3], 3));
 
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function (nums) {
+  for (let num of nums) {
+    if (num == 0) {
+      nums.splice(nums.indexOf(num), 1);
+      nums.push(0);
+    }
+  }
+  return nums;
+};
+
+// console.log(moveZeroes([0, 1, 0, 3, 12]));
+
 
