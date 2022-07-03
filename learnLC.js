@@ -91,8 +91,124 @@ var maxSubArray = function (nums) {
 
     if (maxEnding < 0) maxEnding = 0;
   }
-  console.log(maxSoFar);
   return maxSoFar;
 };
 
-maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
+// console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function (nums, target) {
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = 0; j < nums.length - 1; j++) {
+      if (i != j && nums[i] + nums[j] == target) {
+        return [i, j];
+      }
+    }
+  }
+};
+
+/**
+ * @param {number[]} nums1
+ * @param {number} m
+ * @param {number[]} nums2
+ * @param {number} n
+ * @return {void} Do not return anything, modify nums1 in-place instead.
+ */
+var merge = function (nums1, m, nums2, n) {
+  let i, j, k;
+  for (i = m - 1, j = n - 1, k = m + n - 1; i >= 0 && j >= 0; k--) {
+    if (nums1[i] >= nums2[j]) {
+      nums1[k] = nums1[i--];
+    } else {
+      nums1[k] = nums2[j--];
+    }
+  }
+  while (i >= 0) {
+    nums1[k--] = nums1[i--];
+  }
+  while (j >= 0) {
+    nums1[k--] = nums2[j--];
+  }
+};
+
+// merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3);
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var addTwoNumbers = function (l1, l2) {
+  let head = null;
+  let temp = null;
+  let carry = 0;
+  while (l1 !== null || l2 !== null) {
+    let sum = carry;
+    if (l1 != null) {
+      sum += l1.val;
+      l1 = l1.next;
+    }
+    if (l2 != null) {
+      sum += l2.val;
+      l2 = l2.next;
+    }
+    let node = new ListNode(Math.floor(sum) % 10);
+    carry = Math.floor(sum / 10);
+    if (temp == null) {
+      temp = head = node;
+    } else {
+      temp.next = node;
+      temp = temp.next;
+    }
+  }
+  if (carry > 0) {
+    temp.next = new ListNode(carry);
+  }
+  return head;
+};
+
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+var findMedianSortedArrays = function (nums1, nums2) {
+  let i,
+    j,
+    k,
+    m = nums1.length,
+    n = nums2.length;
+  for (i = m - 1, j = n - 1, k = m + n - 1; i >= 0 && j >= 0; k--) {
+    if (nums1[i] >= nums2[j]) {
+      nums1[k] = nums1[i--];
+    } else {
+      nums1[k] = nums2[j--];
+    }
+  }
+  while (i >= 0) {
+    nums1[k--] = nums1[i--];
+  }
+  while (j >= 0) {
+    nums1[k--] = nums2[j--];
+  }
+  if (nums1.length % 2 == 0) {
+    return (nums1[nums1.length / 2] + nums1[nums1.length / 2 - 1]) / 2;
+  } else {
+    return nums1[Math.round(nums1.length / 2) - 1];
+  }
+};
+
+// console.log(findMedianSortedArrays([3], [-2, -1]));
+
+
