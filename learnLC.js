@@ -211,4 +211,39 @@ var findMedianSortedArrays = function (nums1, nums2) {
 
 // console.log(findMedianSortedArrays([3], [-2, -1]));
 
+/**
+ * @param {number} x
+ * @return {boolean}
+ */
+var isPalindrome = function (x) {
+  if (x < 0) {
+    return false;
+  }
+  let number = x;
+  let reverse = 0;
+  while (number > 0) {
+    reverse = reverse * 10 + (number % 10);
+    number = parseInt(number / 10);
+  }
+  return x === reverse;
+};
 
+// console.log(isPalindrome(9999));
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var wiggleMaxLength = function (nums) {
+  let len = nums.length,
+    i = 1;
+  while (nums[i] === nums[i - 1]) i++;
+  let up = nums[i - 1] > nums[i],
+    ans = 1;
+  for (; i < len; i++)
+    if ((up && nums[i] < nums[i - 1]) || (!up && nums[i] > nums[i - 1]))
+      (up = !up), ans++;
+  return ans;
+};
+
+console.log(wiggleMaxLength([1, 17, 5, 10, 13, 15, 10, 5, 16, 8]));
