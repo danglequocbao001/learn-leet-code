@@ -10,8 +10,8 @@ var containsDuplicate = function (nums) {
 };
 
 var containsNearbyDuplicate = function (nums, k) {
-  let findDuplicates = (arr) =>
-    arr.filter((item, index) => arr.indexOf(item) != index);
+  let findDuplicates = (ratings) =>
+    ratings.filter((item, index) => ratings.indexOf(item) != index);
   let foundDuplicatesArr = [...new Set(findDuplicates(nums))];
 
   for (let item of foundDuplicatesArr) {
@@ -321,4 +321,107 @@ var moveZeroes = function (nums) {
 
 // console.log(moveZeroes([0, 1, 0, 3, 12]));
 
+/**
+ * @param {number[]} ratings
+ * @return {number}
+ */
+var candy = function (ratings) {
+  let n = ratings.length;
+  let sum = 0;
+  let ans = new Array(n);
+  if (n == 1) {
+    return 1;
+  }
+  for (let i = 0; i < n; i++) ans[i] = 1;
+  for (let i = 0; i < n - 1; i++) {
+    if (ratings[i + 1] > ratings[i]) {
+      ans[i + 1] = ans[i] + 1;
+    }
+  }
+  for (let i = n - 2; i >= 0; i--) {
+    if (ratings[i] > ratings[i + 1] && ans[i] <= ans[i + 1]) {
+      ans[i] = ans[i + 1] + 1;
+    }
+    sum += ans[i];
+  }
+  sum += ans[n - 1];
+  return sum;
+};
 
+// console.log(candy([1, 2, 2]));
+
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+function maxProfit(prices) {
+  let globalProfit = 0;
+  for (let i = 0; i < prices.length - 1; i++) {
+    for (let j = i + 1; j < prices.length; j++) {
+      const currentProfit = prices[j] - prices[i];
+      if (currentProfit > globalProfit) {
+        globalProfit = currentProfit;
+      }
+    }
+  }
+  return globalProfit;
+}
+
+// console.log(maxProfit([3, 3]));
+
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValid = function (s) {
+  const leftSymbols = [];
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "(" || s[i] === "{" || s[i] === "[") {
+      leftSymbols.push(s[i]);
+    } else if (
+      s[i] === ")" &&
+      leftSymbols.length !== 0 &&
+      leftSymbols[leftSymbols.length - 1] === "("
+    ) {
+      leftSymbols.pop();
+    } else if (
+      s[i] === "}" &&
+      leftSymbols.length !== 0 &&
+      leftSymbols[leftSymbols.length - 1] === "{"
+    ) {
+      leftSymbols.pop();
+    } else if (
+      s[i] === "]" &&
+      leftSymbols.length !== 0 &&
+      leftSymbols[leftSymbols.length - 1] === "["
+    ) {
+      leftSymbols.pop();
+    } else {
+      return false;
+    }
+  }
+  return leftSymbols.length === 0;
+};
+
+// console.log(isValid("(([]){)}"));
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var searchInsert = function (nums, target) {
+  if (nums.length == 0) {
+    return 0;
+  } else if (nums.includes(target)) {
+    return nums.indexOf(target);
+  } else {
+    nums.push(target);
+    nums.sort(function (a, b) {
+      return a - b;
+    });
+    return nums.indexOf(target);
+  }
+};
+
+console.log(searchInsert([1, 3, 5, 6], 7));
