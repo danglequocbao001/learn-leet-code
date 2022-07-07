@@ -523,4 +523,219 @@ var plusOne = function (digits) {
   return ("" + num).split("");
 };
 
-console.log(plusOne([6, 1, 4, 5, 3, 9, 0, 1, 9, 5, 1, 8, 6, 7, 0, 5, 5, 4, 3]));
+// console.log(plusOne([6, 1, 4, 5, 3, 9, 0, 1, 9, 5, 1, 8, 6, 7, 0, 5, 5, 4, 3]));
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+
+var climbStairs = function (n) {
+  if (n == 0) return 0;
+  if (n == 1) return 1;
+  let one = 1;
+  let two = 0;
+  let result = 0;
+  for (let i = 1; i <= n; i++) {
+    result = one + two;
+    two = one;
+    one = result;
+  }
+  return result;
+};
+
+// console.log(climbStairs(45));
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var longestConsecutive = function (nums) {
+  if (nums.length == 0) {
+    return 0;
+  }
+  let ans = 0,
+    count = 0;
+  nums.sort(function (a, b) {
+    return a - b;
+  });
+
+  var v = [];
+  v.push(nums[0]);
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] != nums[i - 1]) v.push(nums[i]);
+  }
+  for (let i = 0; i < v.length; i++) {
+    if (i > 0 && v[i] == v[i - 1] + 1) count++;
+    else count = 1;
+    ans = Math.max(ans, count);
+  }
+  return ans;
+};
+
+// console.log(longestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortedSquares = function (nums) {
+  let ans = [];
+  for (let num of nums) {
+    ans.push(Math.pow(num, 2));
+  }
+  ans.sort(function (a, b) {
+    return a - b;
+  });
+  return ans;
+};
+
+// console.log(sortedSquares([-4, -1, 0, 3, 10]));
+
+/**
+ * @param {string} order
+ * @param {string} s
+ * @return {string}
+ */
+var customSortString = function (S, T) {
+  ans = "";
+  for (let i = 0; i < S.length; i++) {
+    for (let j = 0; j < T.length; j++) {
+      if (T[j] == S[i]) {
+        ans += S[i];
+        // marking the character/element in
+        // string s as selected
+        T[j] = "A";
+      }
+    }
+  }
+  for (let i = 0; i < T.length; i++) {
+    if (T[i] != "A") {
+      ans += T[i];
+    }
+  }
+  return ans;
+};
+
+// console.log(customSortString("cbafg", "abcd"));
+
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var checkRecord = function (s) {
+  countA = 0;
+  continuosL = 0;
+  charA = "A";
+  charL = "L";
+  for (let i = 0; i < s.length; i++) {
+    if (s.charAt(i) == charA) {
+      countA++;
+      continuosL = 0;
+    } else if (s.charAt(i) == charL) {
+      continuosL++;
+    } else {
+      continuosL = 0;
+    }
+    if (countA > 1 || continuosL > 2) {
+      return false;
+    }
+  }
+  return true;
+};
+
+// console.log(checkRecord("PPALLP"));
+
+/**
+ * @param {number[][]} times
+ * @param {number} n
+ * @param {number} k
+ * @return {number}
+ */
+const networkDelayTime = function (times, n, k) {
+  const distance = new Array(n).fill(Infinity).reduce((acc, v, index) => {
+    acc[index + 1] = Infinity;
+    return acc;
+  }, {});
+  distance[k] = 0;
+
+  const adj = times.reduce((acc, [u, v, w]) => {
+    acc[u] = acc[u] || [];
+    acc[u].push([v, w]);
+    return acc;
+  }, {});
+  let count = n;
+  let max = 0;
+  while (count > 0) {
+    const [minNode, minWeight] = Object.keys(distance).reduce(
+      (acc, node) => {
+        const w = distance[node];
+        if (w < acc[1]) {
+          return [node, w];
+        }
+        return acc;
+      },
+      [0, Infinity]
+    );
+    if (minWeight === Infinity) {
+      return -1;
+    }
+    max = Math.max(max, distance[minNode]);
+    (adj[minNode] || []).forEach(([nextNode, nextWeight]) => {
+      distance[nextNode] = Math.min(
+        distance[nextNode],
+        distance[minNode] + nextWeight
+      );
+    });
+    delete distance[minNode];
+    count -= 1;
+  }
+  return max;
+};
+
+// console.log(
+//   networkDelayTime(
+//     [
+//       [2, 1, 1],
+//       [2, 3, 1],
+//       [3, 4, 1],
+//     ],
+//     4,
+//     2
+//   )
+// );
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var fib = function (n) {
+  if (n < 2) return n; // base condition
+  return fib(n - 2) + fib(n - 1); // recursion
+};
+
+// console.log(fib(2));
+
+/**
+ * @param {string} s1
+ * @param {string} s2
+ * @param {string} s3
+ * @return {boolean}
+ */
+
+var isInterleave = function (s1, s2, s3) {
+  let n = s1.length + 2,
+    m = s2.length + 2;
+  if (n + m - 4 !== s3.length) return false;
+  let dp = new Uint8Array(m);
+  dp[1] = 1;
+  for (let i = 1; i < n; i++)
+    for (let j = 1; j < m; j++) {
+      let up = dp[j] && s1[i - 2] === s3[j + i - 3],
+        left = dp[j - 1] && s2[j - 2] === s3[j + i - 3];
+      dp[j] = up || left;
+    }
+  return dp[m - 1];
+};
+
+// console.log(isInterleave("", "", "a"));
