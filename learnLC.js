@@ -739,3 +739,77 @@ var isInterleave = function (s1, s2, s3) {
 };
 
 // console.log(isInterleave("", "", "a"));
+
+/**
+ * @param {number[]} houses
+ * @param {number[][]} cost
+ * @param {number} m
+ * @param {number} n
+ * @param {number} target
+ * @return {number}
+ */
+
+var minCost = function (houses, cost, m, n, target) {
+  const MAX_COST = Infinity;
+  const memo = [...Array(m)].map(() =>
+    [...Array(target + 1)].map(() => Array(n).fill(MAX_COST))
+  );
+  for (let color = 1; color <= n; color++) {
+    if (houses[0] === color) {
+      memo[0][1][color - 1] = 0;
+    } else if (houses[0] === 0) {
+      memo[0][1][color - 1] = cost[0][color - 1];
+    }
+  }
+
+  for (let house = 1; house < m; house++) {
+    for (
+      let neighborhoods = 1;
+      neighborhoods <= Math.min(target, house + 1);
+      neighborhoods++
+    ) {
+      for (let color = 1; color <= n; color++) {
+        if (houses[house] != 0 && color != houses[house]) {
+          continue;
+        }
+        let currCost = MAX_COST;
+        for (let prevColor = 1; prevColor <= n; prevColor++) {
+          if (prevColor != color) {
+            currCost = Math.min(
+              currCost,
+              memo[house - 1][neighborhoods - 1][prevColor - 1]
+            );
+          } else {
+            currCost = Math.min(
+              currCost,
+              memo[house - 1][neighborhoods][color - 1]
+            );
+          }
+        }
+        let costToPaint = houses[house] != 0 ? 0 : cost[house][color - 1];
+        memo[house][neighborhoods][color - 1] = currCost + costToPaint;
+      }
+    }
+  }
+  let minCost = MAX_COST;
+  for (let color = 1; color <= n; color++) {
+    minCost = Math.min(minCost, memo[m - 1][target][color - 1]);
+  }
+  return minCost == MAX_COST ? -1 : minCost;
+};
+
+console.log(
+  minCost(
+    [0, 0, 0, 0, 0],
+    [
+      [1, 10],
+      [10, 1],
+      [10, 1],
+      [1, 10],
+      [5, 1],
+    ],
+    5,
+    2,
+    3
+  )
+);
