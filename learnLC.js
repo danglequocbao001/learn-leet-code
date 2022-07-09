@@ -798,18 +798,37 @@ var minCost = function (houses, cost, m, n, target) {
   return minCost == MAX_COST ? -1 : minCost;
 };
 
-console.log(
-  minCost(
-    [0, 0, 0, 0, 0],
-    [
-      [1, 10],
-      [10, 1],
-      [10, 1],
-      [1, 10],
-      [5, 1],
-    ],
-    5,
-    2,
-    3
-  )
-);
+// console.log(
+//   minCost(
+//     [0, 0, 0, 0, 0],
+//     [
+//       [1, 10],
+//       [10, 1],
+//       [10, 1],
+//       [1, 10],
+//       [5, 1],
+//     ],
+//     5,
+//     2,
+//     3
+//   )
+// );
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var maxResult = function (nums, k) {
+  let n = nums.length,
+    deq = [n - 1];
+  for (let i = n - 2; ~i; i--) {
+    if (deq[0] - i > k) deq.shift();
+    nums[i] += nums[deq[0]];
+    while (deq.length && nums[deq[deq.length - 1]] <= nums[i]) deq.pop();
+    deq.push(i);
+  }
+  return nums[0];
+};
+
+console.log(maxResult([1, -1, -2, 4, -7, 3], 2));
